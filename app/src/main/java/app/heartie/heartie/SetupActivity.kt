@@ -3,9 +3,11 @@ package app.heartie.heartie
 import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_setup.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,24 +30,38 @@ class SetupActivity : AppCompatActivity() {
             val sdf = SimpleDateFormat(myFormat, Locale.US)
             textView.text = sdf.format(cal.time)
 
-            //TODO replace this to check when clicking the continue button
-            val ageCheck = Calendar.getInstance()
-            ageCheck.add(Calendar.YEAR, -18)
-            if (!cal.time.before(ageCheck.time)) {
-                val text: TextInputLayout = findViewById(R.id.BirthdateInputLayout)
-                text.setError("You need to be over 18 years old!")
-            }
 
         }
 
 
         textView.setOnClickListener {
             DatePickerDialog(this@SetupActivity, dateSetListener,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)).show()
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
+
+        val continueButton: Button = findViewById(R.id.ContinueButton)
+
+        continueButton.setOnClickListener {
+            val birthdayInputLayout: TextInputLayout = findViewById(R.id.BirthdateInputLayout)
+            val nameInputLayout: TextInputLayout = findViewById(R.id.NameInputLayout)
+            var textName = Nameinput.text.toString()
+
+            //TODO stopped working here add the 2 radiogroups
+            birthdayInputLayout.setError(null)
+            val ageCheck = Calendar.getInstance()
+            ageCheck.add(Calendar.YEAR, -18)
+            var allGood: Boolean? = true
+            if (!cal.time.before(ageCheck.time)) {
+                birthdayInputLayout.error = "You need to be over 18 years old!"
+                allGood = false
+            }
+            if (textName.length <= 2) {
+                nameInputLayout.error = "Name too short!"
+                allGood = false
+            }
+
         }
     }
-
-
 }
