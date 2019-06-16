@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
                     "uid" to currentUser!!.uid,
                     "lastlogin" to Date()
                 )
-
+                // Add user to database or update if exists
                 db.collection("users").document(currentUser.uid)
                     .set(user)
                     .addOnSuccessListener { Log.d(TAG, "User successfully written!") }
@@ -70,8 +70,6 @@ class LoginActivity : AppCompatActivity() {
 
                 if (response!!.isNewUser) {
                     // TODO Go to account setup page
-
-
 
                     Toast.makeText(this,"New Account!", Toast.LENGTH_LONG).show()
                 }

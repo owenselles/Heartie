@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, SetupActivity::class.java)
             startActivity(intent)
         } else {
             val intent = Intent(this, LoginActivity::class.java)
