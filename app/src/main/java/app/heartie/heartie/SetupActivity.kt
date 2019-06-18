@@ -4,8 +4,8 @@ import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.RadioGroup
 import android.widget.TextView
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_setup.*
 import java.text.SimpleDateFormat
@@ -46,7 +46,8 @@ class SetupActivity : AppCompatActivity() {
         continueButton.setOnClickListener {
             val birthdayInputLayout: TextInputLayout = findViewById(R.id.BirthdateInputLayout)
             val nameInputLayout: TextInputLayout = findViewById(R.id.NameInputLayout)
-            var textName = Nameinput.text.toString()
+            val genderRadioGroup: RadioGroup = findViewById(R.id.GenderRadioGroup)
+            val textName = Nameinput.text.toString()
 
             //TODO stopped working here add the 2 radiogroups
             birthdayInputLayout.setError(null)
@@ -57,9 +58,12 @@ class SetupActivity : AppCompatActivity() {
                 birthdayInputLayout.error = "You need to be over 18 years old!"
                 allGood = false
             }
-            if (textName.length <= 2) {
+            else if (textName.length <= 2) {
                 nameInputLayout.error = "Name too short!"
                 allGood = false
+            }
+            else if (genderRadioGroup.checkedRadioButtonId == -1) {
+
             }
 
         }
