@@ -1,12 +1,9 @@
 package app.heartie.heartie
 
 import android.app.DatePickerDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.RadioGroup
 import android.widget.TextView
-import com.google.android.material.textfield.TextInputLayout
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_setup.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,7 +15,7 @@ class SetupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_setup)
 
 
-        val textView: TextView = findViewById(R.id.BirthdayInput)
+        val textView: TextView = BirthdayInput
         textView.text = SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis())
         val cal = Calendar.getInstance()
         val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -41,29 +38,30 @@ class SetupActivity : AppCompatActivity() {
                     cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
-        val continueButton: Button = findViewById(R.id.ContinueButton)
-
-        continueButton.setOnClickListener {
-            val birthdayInputLayout: TextInputLayout = findViewById(R.id.BirthdateInputLayout)
-            val nameInputLayout: TextInputLayout = findViewById(R.id.NameInputLayout)
-            val genderRadioGroup: RadioGroup = findViewById(R.id.GenderRadioGroup)
+        ContinueButton.setOnClickListener {
             val textName = Nameinput.text.toString()
 
-            //TODO stopped working here add the 2 radiogroups
-            birthdayInputLayout.setError(null)
+            BirthdateInputLayout.setError(null)
+            NameInputLayout.setError(null)
+
             val ageCheck = Calendar.getInstance()
             ageCheck.add(Calendar.YEAR, -18)
             var allGood: Boolean? = true
             if (!cal.time.before(ageCheck.time)) {
-                birthdayInputLayout.error = "You need to be over 18 years old!"
+                BirthdateInputLayout.error = "You need to be over 18 years old!"
                 allGood = false
             }
             else if (textName.length <= 2) {
-                nameInputLayout.error = "Name too short!"
+                NameInputLayout.error = "Name too short!"
                 allGood = false
             }
-            else if (genderRadioGroup.checkedRadioButtonId == -1) {
-
+            else if (GenderRadioGroup.checkedRadioButtonId == -1) {
+                //TODO Handle error message
+                allGood = false
+            }
+            else if (LookingRadioGroup.checkedRadioButtonId == -1) {
+                //TODO Handle error message
+                allGood = false
             }
 
         }

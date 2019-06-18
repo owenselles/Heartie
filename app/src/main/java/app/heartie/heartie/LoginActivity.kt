@@ -10,7 +10,6 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.time.LocalDateTime
 import java.util.*
 
 class LoginActivity : AppCompatActivity() {
@@ -27,25 +26,21 @@ class LoginActivity : AppCompatActivity() {
 
         // Choose authentication providers
         val providers = arrayListOf(
-//            AuthUI.IdpConfig.EmailBuilder().build(),
-                AuthUI.IdpConfig.PhoneBuilder().build(),
-                AuthUI.IdpConfig.GoogleBuilder().build()
-//                AuthUI.IdpConfig.FacebookBuilder().build(),
-//                AuthUI.IdpConfig.TwitterBuilder().build()
+            AuthUI.IdpConfig.PhoneBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
         )
 
-// Create and launch sign-in intent
         startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setTheme(R.style.LightAppTheme)
-                        .setTosAndPrivacyPolicyUrls(
-                                "https://heartie.app/terms.html",
-                                "https://heartie.app/privacy.html"
-                        )
-                        .build(),
-                RC_SIGN_IN
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .setTheme(R.style.LightAppTheme)
+                .setTosAndPrivacyPolicyUrls(
+                    "https://heartie.app/terms.html",
+                    "https://heartie.app/privacy.html"
+                )
+                .build(),
+            RC_SIGN_IN
         )
     }
 
@@ -56,27 +51,21 @@ class LoginActivity : AppCompatActivity() {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 val currentUser = FirebaseAuth.getInstance().currentUser
-
                 val user = hashMapOf(
                     "uid" to currentUser!!.uid,
                     "lastlogin" to Date()
                 )
-                // Add user to database or update if exists
                 db.collection("users").document(currentUser.uid)
                     .set(user)
                     .addOnSuccessListener { Log.d(TAG, "User successfully written!") }
                     .addOnFailureListener { _ -> Log.w(TAG, "Error writing user!") }
-
-
                 if (response!!.isNewUser) {
                     // TODO Go to account setup page
-
-                    Toast.makeText(this,"New Account!", Toast.LENGTH_LONG).show()
-                }
-                else {
+                    Toast.makeText(this, "New Account!", Toast.LENGTH_LONG).show()
+                } else {
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
-                    Toast.makeText(this,"Welcome back!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Welcome back!", Toast.LENGTH_LONG).show()
                 }
             } else {
                 Toast.makeText(this, "Can't login!", Toast.LENGTH_LONG).show()
