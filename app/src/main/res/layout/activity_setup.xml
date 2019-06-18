@@ -14,6 +14,7 @@
           android:layout_marginStart="8dp"
           android:layout_marginEnd="8dp"
           app:errorEnabled="true"
+          app:hintEnabled="false"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="0.444"
@@ -24,20 +25,22 @@
             android:id="@+id/Nameinput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Add your first name"
             android:inputType="text"
+            android:hint="Add your first name!"
+            app:hintEnabled="false"
             android:singleLine="true"/>
+
   </com.google.android.material.textfield.TextInputLayout>
   <TextView
           android:id="@+id/textView2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="23dp"
-          android:layout_marginStart="16dp"
+          android:layout_marginStart="11dp"
           android:text="Name"
           app:layout_constraintBottom_toTopOf="@+id/NameInputLayout"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/BirthdateInputLayout"/>
+          app:layout_constraintTop_toBottomOf="@+id/BirthdateInputLayout" android:layout_marginBottom="12dp"/>
   <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/BirthdateInputLayout"
     android:layout_width="377dp"
@@ -67,7 +70,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="320dp"
-          android:layout_marginStart="16dp"
+          android:layout_marginStart="11dp"
           android:text="Birthdate"
           app:layout_constraintBottom_toTopOf="@+id/BirthdateInputLayout"
           app:layout_constraintStart_toStartOf="parent"
@@ -113,11 +116,11 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/textView5">
     <RadioButton
-      android:id="@+id/GenderFemaleButton"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="Female"/>
+            android:id="@+id/GenderFemaleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Female" android:checked="true"/>
     <RadioButton
       android:id="@+id/GenderMaleButton"
       android:layout_width="wrap_content"
@@ -150,16 +153,25 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/textView6" android:layout_marginTop="4dp">
     <RadioButton
-            android:id="@+id/radioButton6"
+            android:id="@+id/LookingFemaleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Female"/>
     <RadioButton
-            android:id="@+id/radioButton7"
+            android:id="@+id/LookingMaleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Male"/>
+            android:text="Male" android:checked="true"/>
   </RadioGroup>
+  <ProgressBar
+          style="?android:attr/progressBarStyleHorizontal"
+          android:layout_width="0dp"
+          android:layout_height="4dp"
+          android:id="@+id/progressBar"
+          android:progress="33" app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent" android:max="100" app:layout_constraintHorizontal_bias="0.0"
+  />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,25 @@
 package app.heartie.heartie
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.RadioButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_setup.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class SetupActivity : AppCompatActivity() {
+
+    val db = FirebaseFirestore.getInstance()
+
+    val TAG = "Heartie"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +43,12 @@ class SetupActivity : AppCompatActivity() {
 
 
         textView.setOnClickListener {
-            DatePickerDialog(this@SetupActivity, dateSetListener,
-                    cal.get(Calendar.YEAR),
-                    cal.get(Calendar.MONTH),
-                    cal.get(Calendar.DAY_OF_MONTH)).show()
+            DatePickerDialog(
+                this@SetupActivity, dateSetListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
 
         ContinueButton.setOnClickListener {
@@ -44,6 +57,21 @@ class SetupActivity : AppCompatActivity() {
             BirthdateInputLayout.setError(null)
             NameInputLayout.setError(null)
 
+            //Get gender
+            val selectedId = GenderRadioGroup.getCheckedRadioButtonId()
+            val radioButton = findViewById<View>(selectedId) as RadioButton
+            val gender = radioButton.text.toString()
+
+            //get looking for
+            val selectedId2 = LookingRadioGroup.getCheckedRadioButtonId()
+            val radioButton2 = findViewById<View>(selectedId2) as RadioButton
+            val lookingFor = radioButton2.text.toString()
+
+            //format date
+            val myFormat = "dd.MM.yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+
+            //check if 18+
             val ageCheck = Calendar.getInstance()
             ageCheck.add(Calendar.YEAR, -18)
             var allGood: Boolean? = true
@@ -51,19 +79,27 @@ class SetupActivity : AppCompatActivity() {
                 BirthdateInputLayout.error = "You need to be over 18 years old!"
                 allGood = false
             }
-            else if (textName.length <= 2) {
+            if (textName.length <= 2) {
                 NameInputLayout.error = "Name too short!"
                 allGood = false
             }
-            else if (GenderRadioGroup.checkedRadioButtonId == -1) {
-                //TODO Handle error message
-                allGood = false
+            if (allGood == true) {
+                val intent = Intent(this, Setup2Activity::class.java)
+                startActivity(intent)
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                val user = hashMapOf(
+                    "name" to textName,
+                    "birthdate" to sdf.format(cal.time),
+                    "gender" to gender,
+                    "looking" to lookingFor
+                )
+                if (currentUser != null) {
+                    db.collection("users").document(currentUser.uid)
+                        .update(user as Map<String, Any>)
+                        .addOnSuccessListener { Log.d(TAG, "User successfully written!") }
+                        .addOnFailureListener { _ -> Log.w(TAG, "Error writing user!") }
+                }
             }
-            else if (LookingRadioGroup.checkedRadioButtonId == -1) {
-                //TODO Handle error message
-                allGood = false
-            }
-
         }
     }
 }
