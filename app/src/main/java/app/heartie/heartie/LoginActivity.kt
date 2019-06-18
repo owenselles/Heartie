@@ -52,16 +52,15 @@ class LoginActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 val currentUser = FirebaseAuth.getInstance().currentUser
                 val user = hashMapOf(
-                    "uid" to currentUser!!.uid,
-                    "lastlogin" to Date()
+                    "uid" to currentUser!!.uid
                 )
                 db.collection("users").document(currentUser.uid)
                     .set(user)
                     .addOnSuccessListener { Log.d(TAG, "User successfully written!") }
                     .addOnFailureListener { _ -> Log.w(TAG, "Error writing user!") }
                 if (response!!.isNewUser) {
-                    // TODO Go to account setup page
-                    Toast.makeText(this, "New Account!", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, SetupActivity::class.java)
+                    startActivity(intent)
                 } else {
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
