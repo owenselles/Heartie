@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
                     "uid" to currentUser!!.uid
                 )
                 db.collection("users").document(currentUser.uid)
-                    .set(user)
+                    .update(user as Map<String, Any>)
                     .addOnSuccessListener { Log.d(TAG, "User successfully written!") }
                     .addOnFailureListener { _ -> Log.w(TAG, "Error writing user!") }
                 if (response!!.isNewUser) {

@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_setup2.*
@@ -31,16 +32,23 @@ class Setup2Activity : AppCompatActivity() {
                 // Create a storage reference from our app
                 val storageRef = storage.reference
                 var spaceRef = storageRef.child("images/" + currentUser?.uid.toString())
-                selectedFile?.let { it1 -> spaceRef.putFile(it1) }
+                var uploadTask = selectedFile?.let { it1 -> spaceRef.putFile(it1) }
 
+                if (uploadTask != null) {
+                    uploadTask.addOnFailureListener {
+                        Toast.makeText(this, "Uknown error when uploading!", Toast.LENGTH_LONG).show()
+                    }.addOnSuccessListener {
+                        //TODO next page here
+                    }
+                }
             }
         }
 
         UploadButton.setOnClickListener {
-                val intent = Intent()
-                intent.type = "image/*"
-                intent.setAction(Intent.ACTION_GET_CONTENT)
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.setAction(Intent.ACTION_GET_CONTENT)
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
         }
     }
 
@@ -52,5 +60,11 @@ class Setup2Activity : AppCompatActivity() {
             val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedFile)
             PhotoView.setImageBitmap(bitmap)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, SetupActivity::class.java)
+        startActivity(intent)
     }
 }
