@@ -1,13 +1,19 @@
 package app.heartie.heartie
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_setup.*
@@ -23,6 +29,28 @@ class SetupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setup)
+
+
+        //TODO get location and save to firestore
+//        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+//            != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            //location permisions
+//            val permissions = arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+//            ActivityCompat.requestPermissions(this, permissions, 0)
+//        } else {
+//            fusedLocationClient.lastLocation
+//                .addOnSuccessListener { location: Location? ->
+//                    // Got last known location. In some rare situations this can be null.
+//                    if (location != null) {
+//                        val latitude = location.latitude
+//                        val longitude = location.longitude
+//                    }
+//                }
+//        }
+
+
 
 
         val textView: TextView = BirthdayInput
